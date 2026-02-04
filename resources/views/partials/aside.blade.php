@@ -87,6 +87,7 @@
 						<span class="menu-title">Announcements</span>
 					</a>
 				</div>
+				@if(auth()->user()->role === 'teacher')
 				<div class="menu-item ">
 					<a class="menu-link @if (request()->routeIs('notifications')) active @endif" href="{{ route('notifications') }}">
 						<span class="menu-icon">
@@ -108,6 +109,7 @@
 						@endif
 					</a>
 				</div>
+				@endif
 				<div class="menu-item ">
 					<a class="menu-link @if (request()->routeIs('students.*')) active @endif" href="{{ route('students.index') }}">
 						<span class="menu-icon">

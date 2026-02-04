@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -13,4 +15,9 @@ Route::middleware(['auth'])->group(function () {
 	})->name('profile');
 
 	Route::resource('/teachers', TeacherController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+
+	Route::resource('/announcements', AnnouncementController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+
+	Route::get('/notifications', [NotificationController::class, 'notifications'])->name('notifications');
+	Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 });

@@ -30,7 +30,7 @@ class Announcement extends Model
 		});
 
 		static::addGlobalScope('teacher', function ($builder) {
-			if (auth()->check() && auth()->user()->role === 'teacher') {
+			if (auth()->check() && auth()->user()->isTeacher()) {
 				$builder->where('user_id', auth()->id());
 			}
 		});

@@ -87,7 +87,7 @@
 						<span class="menu-title">Announcements</span>
 					</a>
 				</div>
-				@if(auth()->user()->role === 'teacher')
+				@if(auth()->user()->isTeacher())
 				<div class="menu-item ">
 					<a class="menu-link @if (request()->routeIs('notifications')) active @endif" href="{{ route('notifications') }}">
 						<span class="menu-icon">

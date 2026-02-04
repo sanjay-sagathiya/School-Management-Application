@@ -35,7 +35,7 @@
 							<tr class="fw-bolder text-muted">
 								<th class="min-w-150px">Name</th>
 								<th class="min-w-200px">Email</th>
-								@if(auth()->user()->role === 'admin')
+								@if(auth()->user()->isAdmin())
 									<th class="min-w-200px">Created By</th>
 								@endif
 								<th class="min-w-150px">Created</th>
@@ -49,7 +49,7 @@
 							<tr>
 								<td>{{ $parent->name }}</td>
 								<td>{{ $parent->email }}</td>
-								@if(auth()->user()->role === 'admin')
+								@if(auth()->user()->isAdmin())
 									<td>{{ $parent->teacher->name }}</td>
 								@endif
 								<td>{{ $parent->created_at?->format('Y-m-d') }}</td>

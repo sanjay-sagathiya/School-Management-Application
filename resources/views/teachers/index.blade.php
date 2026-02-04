@@ -47,10 +47,12 @@
 								<td>{{ $teacher->name }}</td>
 								<td>{{ $teacher->email }}</td>
 								<td>{{ $teacher->created_at?->format('Y-m-d') }}</td>
-								<td class="text-end">
-									<button class="btn btn-sm btn-light-primary" onclick="editTeacher({{ $teacher->id }})">Edit</button>
-									<button class="btn btn-sm btn-light-danger" onclick="deleteTeacher({{ $teacher->id }})">Delete</button>
-								</td>
+								@if($teacher->isTeacher())
+									<td class="text-end">
+										<button class="btn btn-sm btn-light-primary" onclick="editTeacher({{ $teacher->id }})">Edit</button>
+										<button class="btn btn-sm btn-light-danger" onclick="deleteTeacher({{ $teacher->id }})">Delete</button>
+									</td>
+								@endif
 							</tr>
 						@endforeach
 						</tbody>

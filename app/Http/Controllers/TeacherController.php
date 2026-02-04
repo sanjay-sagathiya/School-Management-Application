@@ -13,7 +13,14 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = User::role('teacher')->latest()->paginate(10);
+		$user = auth()->user();
+
+		$teachers = User::query()
+			->when(!$user->isAdmin(), function ($query) use ($user) {
+				$query->where('id', $user->id);
+			})
+			->latest()
+			->paginate(10);
 
         return view('teachers.index', compact('teachers'));
     }

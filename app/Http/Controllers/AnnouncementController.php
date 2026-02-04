@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AnnouncementStoreRequest;
 use App\Http\Requests\AnnouncementUpdateRequest;
 use App\Models\Announcement;
+use App\Models\Student;
 use App\Models\User;
 use App\Notifications\AdminAnnouncement;
+use App\Notifications\TeacherAnnouncement;
 use Illuminate\Support\Facades\Notification;
 
 class AnnouncementController extends Controller
@@ -15,7 +17,7 @@ class AnnouncementController extends Controller
     {
 		$role = auth()->user()->role === 'admin' ? 'admin' : 'teacher';
 
-        $announcements = Announcement::role($role)->latest()->paginate(5);
+        $announcements = Announcement::role($role)->latest()->paginate(10);
 
         return view('announcements.index', compact('announcements'));
     }
@@ -31,7 +33,9 @@ class AnnouncementController extends Controller
 			// Send notification
 			Notification::send($teachers, new AdminAnnouncement($announcement));
 		} else {
-			// Send notification to all students and Parents
+			foreach (Student::cursor() as $student) {
+				$student->notify(new TeacherAnnouncement($announcement));
+			}
 		}
 
         return response()->json(['success' => true, 'message' => 'Announcement created.', 'announcement' => $announcement], 201);

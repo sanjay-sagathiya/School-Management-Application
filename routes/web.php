@@ -3,6 +3,7 @@
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,6 @@ Route::middleware(['auth'])->group(function () {
 	Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 
 	Route::resource('/students', StudentController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+
+	Route::resource('/parents', ParentsController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
 });

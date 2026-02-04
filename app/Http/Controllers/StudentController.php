@@ -16,7 +16,8 @@ class StudentController extends Controller
     {
 		$user = auth()->user();
 
-		$students = Student::when($user->role === 'admin', function ($query) {
+		$students = Student::query()
+			->when($user->role === 'admin', function ($query) {
 				$query->withoutGlobalScope('teacher');
 				$query->with('teacher');
 			})

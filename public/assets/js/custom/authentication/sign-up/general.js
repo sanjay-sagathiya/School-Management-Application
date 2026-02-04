@@ -18,18 +18,10 @@ var KTSignupGeneral = function () {
 
             a = FormValidation.formValidation(e, {
                 fields: {
-                    "first-name": {
+                    "name": {
                         validators: {
                             notEmpty: {
-                                message: "First Name is required"
-                            }
-                        }
-                    },
-
-                    "last-name": {
-                        validators: {
-                            notEmpty: {
-                                message: "Last Name is required"
+                                message: "Name is required"
                             }
                         }
                     },
@@ -61,7 +53,7 @@ var KTSignupGeneral = function () {
                         }
                     },
 
-                    "confirm-password": {
+                    "password_confirmation": {
                         validators: {
                             notEmpty: {
                                 message: "The password confirmation is required"
@@ -74,14 +66,6 @@ var KTSignupGeneral = function () {
                             }
                         }
                     },
-
-                    toc: {
-                        validators: {
-                            notEmpty: {
-                                message: "You must accept the terms and conditions"
-                            }
-                        }
-                    }
                 },
 
                 plugins: {
@@ -113,21 +97,9 @@ var KTSignupGeneral = function () {
                             t.removeAttribute("data-kt-indicator");
                             t.disabled = false;
 
-                            Swal.fire({
-                                text: "You have successfully reset your password!",
-                                icon: "success",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    e.reset();
-                                    s.reset();
-                                }
-                            });
-                        }, 1500);
+                            // Submit form after validation
+                            e.submit();
+                        }, 500);
                     } else {
                         Swal.fire({
                             text: "Sorry, looks like there are some errors detected, please try again.",

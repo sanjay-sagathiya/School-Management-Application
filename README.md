@@ -21,39 +21,92 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation Instructions
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+To install this project, follow these steps:
 
-## Laravel Sponsors
+1. **Clone the repository**:
+	```bash
+	git clone https://github.com/yourusername/school-management-application.git
+	cd school-management-application
+	```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Install dependencies**:
+	```bash
+	composer install
+	npm install
+	```
 
-### Premium Partners
+3. **Set up the environment**:
+	- Copy the `.env.example` file to `.env`:
+	```bash
+	cp .env.example .env
+	```
+	- Generate the application key:
+	```bash
+	php artisan key:generate
+	```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. **Set up the database**:
+	- Create a database in your preferred database management system.
+	- Update the `.env` file with your database credentials.
+	- Run migrations:
+	```bash
+	php artisan migrate
+	```
+	- Seed the database:
+	```bash
+	php artisan db:seed
+	```
 
-## Contributing
+5. **Set up the Mail configuration in your .env file**:
+	For example below
+	```bash
+	MAIL_MAILER=smtp
+	MAIL_SCHEME=null
+	MAIL_HOST=127.0.0.1
+	MAIL_PORT=1025
+	MAIL_USERNAME=null
+	MAIL_PASSWORD=null
+	MAIL_FROM_ADDRESS="hello@sma.com"
+	MAIL_FROM_NAME="${APP_NAME}"
+	```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## File Structure
 
-## Code of Conduct
+The project has the following structure:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **app/**: Contains the core application code.
+- **bootstrap/**: Contains the application bootstrap files.
+- **config/**: Contains configuration files.
+- **database/**: Contains database migrations and seeders.
+- **public/**: Contains the public assets.
+- **resources/**: Contains views and raw assets.
+- **routes/**: Contains route definitions.
+- **storage/**: Contains logs and compiled files.
+- **vendor/**: Contains Composer dependencies.
 
-## Security Vulnerabilities
+## Practical Task Overview
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Practical Task : Developing a School Management Application Using Laravel
+
+	- Admin should be able to login to the system. (Admin user can be added to the database statically)
+	- Admin should be able to manage (Add, Edit, and Delete) Teachers
+	- Admin can post new announcements to teachers. Teachers would see them when they login. No emails needed.
+	- As a teacher, I should be able to login and manage Students and Parents
+	- Teachers can post new announcements. They can be targeted towards Students or Parents or both. Emails should be sent from the system for these announcements.
+	- Admin should be able to see all the students, parents, and announcements added by teachers.
+
+Below are git branches and short description about each branch:
+
+SMA-1 : Install Laravel Fortify and create authentication scaffolding
+SMA-2 : Add Admin and Teacher functionality
+SMA-3 : Add Teacher functionality and refactor code
+SMA-4 : Add Announcements and notification functionality
+SMA-5 : Add Student and Parent functionality
+SMA-6 : Refactor code and update READE.MD file
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This application is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -65,6 +65,49 @@
 						<span class="menu-title">Teachers</span>
 					</a>
 				</div>
+				<div class="menu-item ">
+					<a class="menu-link @if (request()->routeIs('announcements.*')) active @endif" href="{{ route('announcements.index') }}">
+						<span class="menu-icon">
+							<span class="svg-icon svg-icon-2">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+									<!-- Light part -->
+									<path
+										d="M3,12 C3,12.5522847 3.44771525,13 4,13 L6,13 L10,17 L10,7 L6,11 L4,11 C3.44771525,11 3,11.4477153 3,12 Z"
+										fill="currentColor" opacity="0.3" />
+
+									<!-- Solid part -->
+									<path
+										d="M10,7 L10,17 C10,17.5522847 10.4477153,18 11,18 C11.2563638,18 11.5127276,17.9023437 11.7071068,17.7071068
+										L15,14.4142136 C18.3137085,14 21,13.1045695 21,12 C21,10.8954305 18.3137085,10 15,9.58578644
+										L11.7071068,6.29289322 C11.5127276,6.09765625 11.2563638,6 11,6 C10.4477153,6 10,6.44771525 10,7 Z"
+										fill="currentColor" />
+								</svg>
+							</span>
+						</span>
+						<span class="menu-title">Announcements</span>
+					</a>
+				</div>
+				<div class="menu-item ">
+					<a class="menu-link @if (request()->routeIs('notifications')) active @endif" href="{{ route('notifications') }}">
+						<span class="menu-icon">
+							<span class="svg-icon svg-icon-2">
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+									<title>Stockholm-icons / General / Notifications1</title>
+									<desc>Created with Sketch.</desc>
+									<defs/>
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<path d="M17,12 L18.5,12 C19.3284271,12 20,12.6715729 20,13.5 C20,14.3284271 19.3284271,15 18.5,15 L5.5,15 C4.67157288,15 4,14.3284271 4,13.5 C4,12.6715729 4.67157288,12 5.5,12 L7,12 L7.5582739,6.97553494 C7.80974924,4.71225688 9.72279394,3 12,3 C14.2772061,3 16.1902508,4.71225688 16.4417261,6.97553494 L17,12 Z" fill="#000000"/>
+										<rect fill="#000000" opacity="0.3" x="10" y="16" width="4" height="4" rx="2"/>
+									</g>
+								</svg>
+							</span>
+						</span>
+						<span class="menu-title">Notifications</span>
+						@if(auth()->user()->unreadNotifications->count() > 0)
+						<span class="bullet bullet-dot bg-success h-6px w-6px position-right translate-middle top-0 start-50 animation-blink"></span>
+						@endif
+					</a>
+				</div>
 			</div>
 			<!--end::Menu-->
 		</div>

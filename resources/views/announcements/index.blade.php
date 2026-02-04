@@ -25,8 +25,11 @@
 					<table id="announcementsTable" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
 						<thead>
 							<tr class="fw-bolder text-muted">
-								<th class="min-w-150px">Subject</th>
-								<th class="min-w-350px">Description</th>
+								<th class="min-w-100px">Subject</th>
+								<th class="min-w-250px">Description</th>
+								@if(auth()->user()->role === 'admin')
+									<th class="min-w-150px">Teacher</th>
+								@endif
 								<th class="min-w-100px text-end">Actions</th>
 							</tr>
 						</thead>
@@ -35,6 +38,9 @@
 							<tr>
 								<td>{{ $announcement->subject }}</td>
 								<td>{{ \Illuminate\Support\Str::limit($announcement->description, 100) }}</td>
+								@if(auth()->user()->role === 'admin')
+									<td>{{ $announcement->user?->name}}</td>
+								@endif
 								<td class="text-end">
 									<button class="btn btn-sm btn-light-primary" onclick="editAnnouncement({{ $announcement->id }})">Edit</button>
 									<button class="btn btn-sm btn-light-danger" onclick="deleteAnnouncement({{ $announcement->id }})">Delete</button>
@@ -68,6 +74,18 @@
 							<textarea class="form-control" id="announcementDescription" name="description" required></textarea>
 							<small class="text-danger" id="descriptionError"></small>
 						</div>
+						@if(auth()->user()->role === 'teacher')
+							<div class="mb-3">
+								<label class="form-label">Receiver</label>
+								<select name="receiver" id="receiver" class="form-select" placeholder="Select receiver" required>
+										<option value="">Select receiver</option>
+										<option value="students">Students</option>
+										<option value="parents">Parents</option>
+										<option value="both">Both</option>
+								</select>
+								<small class="text-danger" id="receiverError"></small>
+							</div>
+						@endif
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -88,6 +106,7 @@
 	function resetAnnouncementForm() {
 		document.getElementById('announcementForm').reset();
 		document.getElementById('announcementId').value = '';
+		$('#receiver').val(null).trigger('change');
 		document.getElementById('announcementModalLabel').textContent = 'Add Announcement';
 		document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 	}
@@ -111,6 +130,13 @@
 			description: document.getElementById('announcementDescription').value,
 			_token: '{{ csrf_token() }}'
 		};
+
+		const receiverEl = document.getElementById('receiver');
+
+		// Only add receiver if it actually exists + has value
+		if (receiverEl && receiverEl.value) {
+			formData.receiver = receiverEl.value;
+		}
 
 		if (announcementId) {
 			formData._method = 'PUT';
@@ -152,10 +178,29 @@
 		})
 		.then(response => response.json())
 		.then(announcement => {
+			// Fill basic fields
 			document.getElementById('announcementId').value = announcement.id;
 			document.getElementById('announcementSubject').value = announcement.subject;
 			document.getElementById('announcementDescription').value = announcement.description;
-			document.getElementById('announcementModalLabel').textContent = 'Edit Announcement';
+
+			// Pre-fill receiver (only if exists)
+			const receiverEl = document.getElementById('receiver');
+
+			if (receiverEl && announcement.receiver) {
+				// Clear previous selection
+				receiverEl.value = '';
+
+				// Find matching option and select it
+				const option = receiverEl.querySelector(
+					`option[value="${announcement.receiver}"]`
+				);
+
+				if (option) {
+					option.selected = true;
+				}
+			}
+
+
 			document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 			new bootstrap.Modal(document.getElementById('announcementModal')).show();
 		})

@@ -16,6 +16,7 @@ class AnnouncementStoreRequest extends FormRequest
         return [
             'subject' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
+			'receiver' => ['sometimes', 'string', "in:students,parents,both"],
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,19 +13,13 @@ class Announcement extends Model
         'user_id',
         'subject',
         'description',
+		'receiver'
     ];
 
 	public function user()
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsTo(User::class, 'user_id');
 	}
-
-	public function scopeRole(Builder $query, string $role): Builder
-    {
-        return $query->whereHas('user', function (Builder $query) use ($role) {
-				$query->where('role', $role);
-			});
-    }
 
 	public static function boot()
 	{
@@ -34,6 +27,12 @@ class Announcement extends Model
 
 		static::creating(function ($announcement) {
 			$announcement->user_id = auth()->id();
+		});
+
+		static::addGlobalScope('teacher', function ($builder) {
+			if (auth()->check() && auth()->user()->role === 'teacher') {
+				$builder->where('user_id', auth()->id());
+			}
 		});
 	}
 }

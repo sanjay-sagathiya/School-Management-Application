@@ -47,8 +47,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function scopeRole(Builder $query, string $role): Builder
-    {
-        return $query->where('role', $role);
-    }
+	public function scopeRole(Builder $query, string $role): Builder
+	{
+		return $query->where('role', $role);
+	}
 }

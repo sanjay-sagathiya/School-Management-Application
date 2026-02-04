@@ -18,7 +18,7 @@ class ParentsController extends Controller
 		$parents = Parents::query()
 			->when($user->role === 'admin', function ($query) {
 				$query->withoutGlobalScope('teacher');
-				$query->with('teacher');
+				$query->with('teacher:id,name');
 			})
 			->latest()
 			->paginate(10);

@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Notification\Contracts\Notification;
 use App\Http\Requests\AnnouncementStoreRequest;
 use App\Http\Requests\AnnouncementUpdateRequest;
 use App\Models\Announcement;
-use App\Models\Parents;
-use App\Models\Student;
-use App\Models\User;
-use App\Notifications\AdminAnnouncement;
-use App\Notifications\TeacherAnnouncement;
-use Symfony\Component\HttpFoundation\Request;
 
 class AnnouncementController extends Controller
 {
@@ -29,11 +24,14 @@ class AnnouncementController extends Controller
         return view('announcements.index', compact('announcements'));
     }
 
-    public function store(AnnouncementStoreRequest $request)
+    public function store(AnnouncementStoreRequest $request, Notification $notification)
     {
         $announcement = Announcement::create($request->validated());
 
-		$this->sendNotifications($announcement, $request);
+		$receiver = auth()->user()->isAdmin() ? 'teachers' : $request->input('receiver');
+
+		// Send notifications based on receiver type
+		$notification->send($announcement, $receiver);
 
         return response()->json(['success' => true, 'message' => 'Announcement created.', 'announcement' => $announcement], 201);
     }
@@ -56,50 +54,4 @@ class AnnouncementController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Announcement deleted.']);
     }
-
-	public function sendNotifications(Announcement $announcement, Request $request)
-	{
-		$receiver = auth()->user()->isAdmin() ? 'teachers' : $request->input('receiver');
-
-		$handlers = [
-			'teachers' => 'sendNotificationToTeachers',
-			'students' => 'sendNotificationToStudents',
-			'parents'  => 'sendNotificationToParents',
-			'both'     => 'sendNotificationToBoth',
-		];
-
-		if (isset($handlers[$receiver])) {
-			$this->{$handlers[$receiver]}($announcement);
-		}
-	}
-
-	public function sendNotificationToTeachers(Announcement $announcement)
-	{
-		// Send notification to all teachers
-		foreach (User::role('teacher')->cursor() as $teacher) {
-			$teacher->notify(new AdminAnnouncement($announcement));
-		}
-	}
-
-	public function sendNotificationToStudents(Announcement $announcement)
-	{
-		// Send notification to all students
-		foreach (Student::cursor() as $student) {
-			$student->notify(new TeacherAnnouncement($announcement));
-		}
-	}
-
-	public function sendNotificationToParents(Announcement $announcement)
-	{
-		// Send notification to all students
-		foreach (Parents::cursor() as $parent) {
-			$parent->notify(new TeacherAnnouncement($announcement));
-		}
-	}
-
-	public function sendNotificationToBoth(Announcement $announcement)
-	{
-		$this->sendNotificationToParents($announcement);
-		$this->sendNotificationToStudents($announcement);
-	}
 }

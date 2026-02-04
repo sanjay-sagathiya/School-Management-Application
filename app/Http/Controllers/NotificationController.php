@@ -8,12 +8,13 @@ class NotificationController extends Controller
 {
     public function notifications()
 	{
-		if (auth()->user()->role == 'admin') {
+		$user = auth()->user();
+
+		if ($user->isAdmin()) {
 			return redirect()->route('dashboard');
 		}
 
-		$notifications = auth()->user()
-			->notifications()
+		$notifications = $user->notifications()
 			->latest()
 			->paginate(10);
 
@@ -22,7 +23,9 @@ class NotificationController extends Controller
 
 	public function markAsRead($id)
 	{
-		$notification = auth()->user()->notifications()->where('id', $id)->firstOrfail();
+		$user = auth()->user();
+
+		$notification = $user->notifications()->where('id', $id)->firstOrfail();
 
 		$notification->markAsRead();
 

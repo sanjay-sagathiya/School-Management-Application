@@ -27,7 +27,7 @@
 							<tr class="fw-bolder text-muted">
 								<th class="min-w-100px">Subject</th>
 								<th class="min-w-250px">Description</th>
-								@if(auth()->user()->role === 'admin')
+								@if(auth()->user()->isAdmin())
 									<th class="min-w-150px">Teacher</th>
 								@endif
 								<th class="min-w-100px text-end">Actions</th>
@@ -38,7 +38,7 @@
 							<tr>
 								<td>{{ $announcement->subject }}</td>
 								<td>{{ \Illuminate\Support\Str::limit($announcement->description, 100) }}</td>
-								@if(auth()->user()->role === 'admin')
+								@if(auth()->user()->isAdmin())
 									<td>{{ $announcement->user?->name}}</td>
 								@endif
 								<td class="text-end">
@@ -74,7 +74,7 @@
 							<textarea class="form-control" id="announcementDescription" name="description" required></textarea>
 							<small class="text-danger" id="descriptionError"></small>
 						</div>
-						@if(auth()->user()->role === 'teacher')
+						@if(auth()->user()->isTeacher())
 							<div class="mb-3">
 								<label class="form-label">Receiver</label>
 								<select name="receiver" id="receiver" class="form-select" placeholder="Select receiver" required>

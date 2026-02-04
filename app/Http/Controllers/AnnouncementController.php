@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
 		$user = auth()->user();
 
 		$announcements = Announcement::query()
-			->when($user->role === 'admin', function ($query) {
+			->when($user->isAdmin(), function ($query) {
 				$query->withoutGlobalScope('teacher');
 				$query->with('user:id,name');
 			})
@@ -59,7 +59,7 @@ class AnnouncementController extends Controller
 
 	public function sendNotifications(Announcement $announcement, Request $request)
 	{
-		$receiver = auth()->user()->role === 'admin' ? 'teachers' : $request->input('receiver');
+		$receiver = auth()->user()->isAdmin() ? 'teachers' : $request->input('receiver');
 
 		$handlers = [
 			'teachers' => 'sendNotificationToTeachers',

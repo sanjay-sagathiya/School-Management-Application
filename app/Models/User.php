@@ -47,8 +47,21 @@ class User extends Authenticatable
         ];
     }
 
-	public function scopeRole(Builder $query, string $role): Builder
+	public function isAdmin()
 	{
-		return $query->where('role', $role);
+		if($this->role === 'admin') {
+			return true;
+		}
+
+		return false;
 	}
+
+	public function isTeacher()
+	{
+		if($this->role === 'teacher') {
+			return true;
+		}
+
+		return false;
+	}	
 }

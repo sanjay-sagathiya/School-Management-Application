@@ -34,7 +34,7 @@ class Parents extends Model
 		});
 
 		static::addGlobalScope('teacher', function ($builder) {
-			if (auth()->check() && auth()->user()->role === 'teacher') {
+			if (auth()->check() && auth()->user()->isTeacher()) {
 				$builder->where('teacher_id', auth()->id());
 			}
 		});

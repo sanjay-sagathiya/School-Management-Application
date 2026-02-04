@@ -16,7 +16,7 @@ class ParentsController extends Controller
         $user = auth()->user();
 
 		$parents = Parents::query()
-			->when($user->role === 'admin', function ($query) {
+			->when($user->isAdmin(), function ($query) {
 				$query->withoutGlobalScope('teacher');
 				$query->with('teacher:id,name');
 			})
